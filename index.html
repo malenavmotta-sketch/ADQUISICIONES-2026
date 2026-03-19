@@ -201,7 +201,12 @@ table.main tr:hover td{background:var(--bg2)}
 </div>
 <script>
 var SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTMwWUwo7BQxyUhUAQtapVGDT5vnRv28LzwF4mgv7LU4vGbJoxtNgwV-pI_It9bh5aSCtg0lwQLtPyW/pub?gid=0&single=true&output=csv';
-var CSV_URL = 'https://corsproxy.io/?' + encodeURIComponent(SHEET_URL);
+var PROXIES = [
+  'https://corsproxy.io/?' + encodeURIComponent(SHEET_URL),
+  'https://api.allorigins.win/raw?url=' + encodeURIComponent(SHEET_URL),
+  'https://cors-anywhere.herokuapp.com/' + SHEET_URL
+];
+var CSV_URL = PROXIES[0];
 
 // Estados correctos con su clase CSS y color
 var ESTADOS = [
@@ -339,24 +344,30 @@ function agrupar(rows) {
 function cargarDatos(manual) {
   var dot=document.getElementById('sync-dot'), lbl=document.getElementById('sync-label');
   dot.className='sync-dot loading'; lbl.textContent='Cargando...';
-  fetch(CSV_URL+'&nocache='+Date.now())
-    .then(function(r){return r.text();})
-    .then(function(text){
-      var rows=parseCSV(text);
-      rawCount=rows.filter(function(r){return r['HOSPITAL']&&r['HOSPITAL'].indexOf('CANTIDAD')!==0;}).length;
-      agrupados=agrupar(rows);
-      dot.className='sync-dot';
-      var now=new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
-      lbl.textContent='Actualizado '+now;
-      document.getElementById('header-count').textContent=agrupados.length+' equipos unicos';
-      document.getElementById('loading-screen').style.display='none';
-      document.getElementById('app').style.display='';
-      renderDash(); renderFiltros();
-    })
-    .catch(function(){
+  function intentarProxy(idx) {
+    if (idx >= PROXIES.length) {
       dot.className='sync-dot error'; lbl.textContent='Error al cargar';
       document.getElementById('loading-screen').innerHTML='<p style="color:#E24B4A;font-size:14px">No se pudo cargar el Sheet.<br><br><button onclick="cargarDatos(true)" style="margin-top:8px;padding:6px 14px;font-size:13px;border:0.5px solid rgba(0,0,0,0.25);border-radius:8px;background:#fff;cursor:pointer">Reintentar</button></p>';
-    });
+      return;
+    }
+    fetch(PROXIES[idx]+'&nocache='+Date.now())
+      .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.text(); })
+      .then(function(text){
+        if(text.indexOf('HOSPITAL')===-1) throw new Error('contenido invalido');
+        var rows=parseCSV(text);
+        rawCount=rows.filter(function(r){return r['HOSPITAL']&&r['HOSPITAL'].indexOf('CANTIDAD')!==0;}).length;
+        agrupados=agrupar(rows);
+        dot.className='sync-dot';
+        var now=new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
+        lbl.textContent='Actualizado '+now;
+        document.getElementById('header-count').textContent=agrupados.length+' equipos unicos';
+        document.getElementById('loading-screen').style.display='none';
+        document.getElementById('app').style.display='';
+        renderDash(); renderFiltros();
+      })
+      .catch(function(){ intentarProxy(idx+1); });
+  }
+  intentarProxy(0);
 }
 
 function showTab(t) {
