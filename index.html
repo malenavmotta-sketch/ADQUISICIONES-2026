@@ -11,9 +11,10 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f5f5f3;color:#1a
 @media(prefers-color-scheme:dark){
   :root{--bg1:#1e1e1c;--bg2:#2a2a28;--t1:#f0ede6;--t2:#b4b2a9;--t3:#888780;--b1:rgba(255,255,255,0.12);--b2:rgba(255,255,255,0.25)}
   body{background:#141412;color:#f0ede6}
-  .badge-sin{background:#2C2C2A;color:#D3D1C7}.badge-pliego{background:#26215C;color:#CECBF6}
-  .badge-firmado{background:#042C53;color:#B5D4F4}.badge-adj{background:#173404;color:#C0DD97}
-  .badge-noc{background:#501313;color:#F7C1C1}
+  .bs0{background:#2C2C2A;color:#D3D1C7}.bs1{background:#26215C;color:#CECBF6}
+  .bs2{background:#042C53;color:#B5D4F4}.bs3{background:#173404;color:#C0DD97}
+  .bs4{background:#412402;color:#FAC775}.bs5{background:#501313;color:#F7C1C1}
+  .bs6{background:#2C2C2A;color:#D3D1C7}.bs7{background:#501313;color:#F7C1C1}
   .dias-rojo{background:#501313;color:#F7C1C1}.dias-naranja{background:#412402;color:#FAC775}
   .dias-verde{background:#173404;color:#C0DD97}.dias-gris{background:#2C2C2A;color:#D3D1C7}
   .tag-si{background:#173404;color:#C0DD97}.tag-no{background:#2C2C2A;color:#B4B2A9}
@@ -41,7 +42,7 @@ header h1{font-size:17px;font-weight:500}
 .card-full{background:var(--bg1);border:0.5px solid var(--b1);border-radius:var(--r2);padding:1rem 1.25rem;margin-bottom:1.5rem}
 .card-title{font-size:13px;font-weight:500;color:var(--t2);margin-bottom:12px}
 .bar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
-.bar-label{font-size:12px;color:var(--t2);width:120px;text-align:right;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar-label{font-size:12px;color:var(--t2);width:130px;text-align:right;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .bar-track{flex:1;height:14px;background:var(--bg2);border-radius:7px;overflow:hidden}
 .bar-fill{height:100%;border-radius:7px}
 .bar-count{font-size:12px;color:var(--t2);width:28px;text-align:right;flex-shrink:0}
@@ -74,7 +75,7 @@ header h1{font-size:17px;font-weight:500}
 .proy-arrow.open{transform:rotate(90deg)}
 .proy-body{display:none;border-top:0.5px solid var(--b1);overflow-x:auto}
 .proy-body.open{display:block}
-.proy-table{width:100%;border-collapse:collapse;font-size:12px;min-width:650px}
+.proy-table{width:100%;border-collapse:collapse;font-size:12px;min-width:700px}
 .proy-table th{padding:6px 10px;font-size:11px;color:var(--t2);font-weight:500;background:var(--bg2);text-align:left;border-bottom:0.5px solid var(--b1)}
 .proy-table td{padding:6px 10px;border-bottom:0.5px solid var(--b1)}
 .proy-table tr:last-child td{border-bottom:none}
@@ -89,11 +90,16 @@ header h1{font-size:17px;font-weight:500}
 .total-value{font-size:18px;font-weight:500}
 .total-sub{font-size:12px;color:var(--t3)}
 .badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500;white-space:nowrap}
-.badge-sin{background:#F1EFE8;color:#444441}.badge-pliego{background:#EEEDFE;color:#3C3489}
-.badge-firmado{background:#E6F1FB;color:#0C447C}.badge-adj{background:#EAF3DE;color:#27500A}
-.badge-noc{background:#FCEBEB;color:#791F1F}
+.bs0{background:#F1EFE8;color:#444441}
+.bs1{background:#EEEDFE;color:#3C3489}
+.bs2{background:#E6F1FB;color:#0C447C}
+.bs3{background:#EAF3DE;color:#27500A}
+.bs4{background:#FAEEDA;color:#633806}
+.bs5{background:#FCEBEB;color:#791F1F}
+.bs6{background:#F1EFE8;color:#5F5E5A}
+.bs7{background:#FCEBEB;color:#A32D2D}
 .table-wrap{overflow-x:auto}
-table.main{width:100%;border-collapse:collapse;font-size:13px;min-width:900px}
+table.main{width:100%;border-collapse:collapse;font-size:13px;min-width:1000px}
 table.main th{text-align:left;padding:8px 10px;color:var(--t2);font-weight:500;border-bottom:0.5px solid var(--b1);white-space:nowrap;background:var(--bg1);position:sticky;top:0;z-index:1}
 table.main td{padding:7px 10px;border-bottom:0.5px solid var(--b1);vertical-align:middle}
 table.main tr:last-child td{border-bottom:none}
@@ -164,19 +170,26 @@ table.main tr:hover td{background:var(--bg2)}
         <input type="text" id="search" placeholder="Buscar equipo, hospital, proyecto..." oninput="renderTabla()">
         <select id="f-estado" onchange="renderTabla()">
           <option value="">Todos los estados</option>
-          <option>SIN AVANCE</option><option>ARMADO DE PLIEGO</option>
-          <option>PLIEGO FIRMADO</option><option>2026</option><option>NO SE COMPRO</option>
+          <option>SIN AVANCE</option>
+          <option>ARMADO DE PLIEGO</option>
+          <option>PUBLICACION</option>
+          <option>EN EVALUACION</option>
+          <option>ADJUDICADO</option>
+          <option>FRACASADO</option>
+          <option>DESIERTO</option>
+          <option>NO SE COMPRO</option>
         </select>
         <select id="f-hosp" onchange="renderTabla()"><option value="">Todos los hospitales</option></select>
-        <select id="f-tipo" onchange="renderTabla()"><option value="">Todos los tipos</option></select>
+        <select id="f-tipo" onchange="renderTabla()"><option value="">Todos los tipos de proyecto</option></select>
       </div>
       <div class="total-bar" id="total-bar"></div>
       <div class="table-wrap">
         <table class="main">
           <thead><tr>
-            <th>Hospital</th><th>Equipo</th><th>Tipo</th><th>Q total</th>
+            <th>Hospital</th><th>Equipo</th><th>Tipo equipo</th><th>Q total</th>
             <th>P. Unit.</th><th>P. Total</th><th>Proyecto</th><th>Tipo proy.</th>
-            <th>Expediente</th><th>Licitacion</th><th>Apertura</th><th>Estado</th><th>Cheq.</th>
+            <th>Año entrega</th><th>Expediente</th><th>Licitacion</th>
+            <th>Apertura</th><th>Estado</th><th>Cheq.</th>
           </tr></thead>
           <tbody id="tbody"></tbody>
         </table>
@@ -189,83 +202,100 @@ table.main tr:hover td{background:var(--bg2)}
 <script>
 var SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTMwWUwo7BQxyUhUAQtapVGDT5vnRv28LzwF4mgv7LU4vGbJoxtNgwV-pI_It9bh5aSCtg0lwQLtPyW/pub?gid=0&single=true&output=csv';
 var CSV_URL = 'https://corsproxy.io/?' + encodeURIComponent(SHEET_URL);
-var ESTADO_CLS = {'SIN AVANCE':'sin','ARMADO DE PLIEGO':'pliego','PLIEGO FIRMADO':'firmado','2026':'adj','NO SE COMPRO':'noc'};
-var ESTADO_COLOR = {'SIN AVANCE':'#888780','ARMADO DE PLIEGO':'#7F77DD','PLIEGO FIRMADO':'#378ADD','2026':'#639922','NO SE COMPRO':'#E24B4A'};
-var ESTADO_ORDER = ['SIN AVANCE','ARMADO DE PLIEGO','PLIEGO FIRMADO','2026','NO SE COMPRO'];
+
+// Estados correctos con su clase CSS y color
+var ESTADOS = [
+  {v:'SIN AVANCE',    cls:'bs0', color:'#888780'},
+  {v:'ARMADO DE PLIEGO', cls:'bs1', color:'#7F77DD'},
+  {v:'PUBLICACION',   cls:'bs2', color:'#378ADD'},
+  {v:'EN EVALUACION', cls:'bs4', color:'#EF9F27'},
+  {v:'ADJUDICADO',    cls:'bs3', color:'#639922'},
+  {v:'FRACASADO',     cls:'bs5', color:'#E24B4A'},
+  {v:'DESIERTO',      cls:'bs6', color:'#B4B2A9'},
+  {v:'NO SE COMPRO',  cls:'bs7', color:'#A32D2D'}
+];
+var ESTADO_MAP = {};
+for (var i=0;i<ESTADOS.length;i++) ESTADO_MAP[ESTADOS[i].v] = ESTADOS[i];
+
+// Valores validos de estado — para no confundir con AÑO ENTREGA
+var ESTADOS_VALIDOS = {};
+for (var i=0;i<ESTADOS.length;i++) ESTADOS_VALIDOS[ESTADOS[i].v] = true;
+
 var TIPO_COLOR = {'OBRA':'#378ADD','SUMAR':'#1D9E75','SOLO PROYECTO':'#EF9F27','2027':'#888780'};
+
 var agrupados = [];
 var rawCount = 0;
 
-function parseCSV(text) {
-  var lines = text.split('\n');
-  var headers = splitCSVLine(lines[0]);
-  var result = [];
-  for (var i = 1; i < lines.length; i++) {
-    if (!lines[i].trim()) continue;
-    var vals = splitCSVLine(lines[i]);
-    var obj = {};
-    for (var j = 0; j < headers.length; j++) {
-      obj[headers[j].trim()] = (vals[j] || '').trim();
-    }
-    result.push(obj);
-  }
-  return result;
-}
-
 function splitCSVLine(line) {
-  var result = [];
-  var cur = '';
-  var inQ = false;
-  for (var i = 0; i < line.length; i++) {
+  var result = [], cur = '', inQ = false;
+  for (var i=0;i<line.length;i++) {
     var c = line[i];
-    if (c === '"') { inQ = !inQ; }
-    else if (c === ',' && !inQ) { result.push(cur); cur = ''; }
-    else { cur += c; }
+    if (c==='"') { inQ=!inQ; }
+    else if (c===','&&!inQ) { result.push(cur); cur=''; }
+    else { cur+=c; }
   }
   result.push(cur);
   return result;
 }
 
+function parseCSV(text) {
+  var lines = text.split('\n');
+  var headers = splitCSVLine(lines[0]);
+  var result = [];
+  for (var i=1;i<lines.length;i++) {
+    if (!lines[i].trim()) continue;
+    var vals = splitCSVLine(lines[i]);
+    var obj = {};
+    for (var j=0;j<headers.length;j++) obj[headers[j].trim()] = (vals[j]||'').trim();
+    result.push(obj);
+  }
+  return result;
+}
+
 function parseUSD(str) {
   if (!str) return 0;
-  var n = parseFloat(str.replace(/[^0-9.]/g, ''));
+  var n = parseFloat(str.replace(/[^0-9.]/g,''));
   return isNaN(n) ? 0 : n;
 }
-
 function fmtUSD(n) {
   if (!n) return '\u2014';
-  return 'USD ' + n.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+  return 'USD '+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
 }
-
 function fmtFecha(s) {
   if (!s) return '\u2014';
-  var p = s.split('-');
-  return p.length === 3 ? p[2]+'/'+p[1]+'/'+p[0] : s;
+  var p=s.split('-');
+  return p.length===3 ? p[2]+'/'+p[1]+'/'+p[0] : s;
 }
-
-function diasChip(fechaStr) {
-  if (!fechaStr) return '';
-  var hoy = new Date(); hoy.setHours(0,0,0,0);
-  var f = new Date(fechaStr + 'T00:00:00');
-  var diff = Math.ceil((f - hoy) / 86400000);
-  if (diff < 0)  return '<span class="dias-chip dias-gris">Vencida</span>';
-  if (diff === 0) return '<span class="dias-chip dias-rojo">Hoy</span>';
-  if (diff <= 7)  return '<span class="dias-chip dias-rojo">'+diff+' dias</span>';
-  if (diff <= 30) return '<span class="dias-chip dias-naranja">'+diff+' dias</span>';
-  return '<span class="dias-chip dias-verde">'+diff+' dias</span>';
+function diasChip(f) {
+  if (!f) return '';
+  var hoy=new Date(); hoy.setHours(0,0,0,0);
+  var d=Math.ceil((new Date(f+'T00:00:00')-hoy)/86400000);
+  if (d<0)  return '<span class="dias-chip dias-gris">Vencida</span>';
+  if (d===0) return '<span class="dias-chip dias-rojo">Hoy</span>';
+  if (d<=7)  return '<span class="dias-chip dias-rojo">'+d+' dias</span>';
+  if (d<=30) return '<span class="dias-chip dias-naranja">'+d+' dias</span>';
+  return '<span class="dias-chip dias-verde">'+d+' dias</span>';
 }
 
 function badge(e) {
-  var cls = ESTADO_CLS[e] || 'sin';
-  return '<span class="badge badge-'+cls+'">'+(e||'SIN AVANCE')+'</span>';
+  var info = ESTADO_MAP[e] || ESTADO_MAP['SIN AVANCE'];
+  return '<span class="badge '+info.cls+'">'+(e||'SIN AVANCE')+'</span>';
+}
+
+function getEstado(r) {
+  // Leer SOLO la columna ESTADO — ignorar AÑO ENTREGA completamente
+  var e = (r['ESTADO']||'').trim().toUpperCase();
+  // Si el valor no es un estado válido, tratar como SIN AVANCE
+  return ESTADOS_VALIDOS[e] ? e : 'SIN AVANCE';
 }
 
 function agrupar(rows) {
   var mapa = {};
-  for (var i = 0; i < rows.length; i++) {
+  for (var i=0;i<rows.length;i++) {
     var r = rows[i];
-    if (!r['HOSPITAL'] || r['HOSPITAL'].indexOf('CANTIDAD') === 0) continue;
-    var key = r['HOSPITAL'] + '|||' + r['EQUIPO'] + '|||' + r['TIPO'] + '|||' + r['NOMBRE PROYECTO'];
+    if (!r['HOSPITAL'] || r['HOSPITAL'].indexOf('CANTIDAD')===0) continue;
+    // Clave: hospital + equipo + tipo + proyecto (los 4 campos)
+    var key = r['HOSPITAL']+'|||'+r['EQUIPO']+'|||'+r['TIPO']+'|||'+r['NOMBRE PROYECTO'];
     if (!mapa[key]) {
       mapa[key] = {
         hospital: r['HOSPITAL'],
@@ -276,143 +306,136 @@ function agrupar(rows) {
         p_total: 0,
         chequeado: r['CHEQUEADO CON SP'],
         tipo_proyecto: r['TIPO PROYECTO'],
+        anio_entrega: r['AÑO ENTREGA'],  // columna separada, solo informativa
         nombre_proyecto: r['NOMBRE PROYECTO'],
-        estado: r['ESTADO'] || 'SIN AVANCE',
-        expediente: r['EXPEDIENTE'],
-        licitacion: r['LICITACION'],
-        fecha_apertura: r['FECHA DE APERTURA'],
+        estado: 'SIN AVANCE',
+        estado_orden: 0,
+        expediente: '',
+        licitacion: '',
+        fecha_apertura: '',
         observacion: r['OBSERVACION']
       };
     }
     var g = mapa[key];
-    var q = parseInt(r['Q SOLICIT.']) || 0;
+    var q = parseInt(r['Q SOLICIT.'])||0;
     g.q_total += q;
     g.p_total += parseUSD(r['P. TOTAL']);
-    var eIdx = ESTADO_ORDER.indexOf(r['ESTADO'] || 'SIN AVANCE');
-    var gIdx = ESTADO_ORDER.indexOf(g.estado);
-    if (eIdx > gIdx) g.estado = r['ESTADO'] || 'SIN AVANCE';
-    if (r['FECHA DE APERTURA'] && !g.fecha_apertura) g.fecha_apertura = r['FECHA DE APERTURA'];
-    if (r['EXPEDIENTE'] && !g.expediente) g.expediente = r['EXPEDIENTE'];
-    if (r['LICITACION'] && !g.licitacion) g.licitacion = r['LICITACION'];
+    // Estado: tomar el mas avanzado del grupo
+    var e = getEstado(r);
+    var eIdx = -1;
+    for (var j=0;j<ESTADOS.length;j++) { if (ESTADOS[j].v===e) { eIdx=j; break; } }
+    if (eIdx > g.estado_orden) { g.estado=e; g.estado_orden=eIdx; }
+    // Datos opcionales: tomar primero disponible
+    if (r['FECHA DE APERTURA'] && !g.fecha_apertura) g.fecha_apertura=r['FECHA DE APERTURA'];
+    if (r['EXPEDIENTE'] && !g.expediente) g.expediente=r['EXPEDIENTE'];
+    if (r['LICITACION'] && !g.licitacion) g.licitacion=r['LICITACION'];
+    if (r['AÑO ENTREGA'] && !g.anio_entrega) g.anio_entrega=r['AÑO ENTREGA'];
   }
-  var result = [];
+  var result=[];
   for (var k in mapa) result.push(mapa[k]);
   return result;
 }
 
 function cargarDatos(manual) {
-  var dot = document.getElementById('sync-dot');
-  var lbl = document.getElementById('sync-label');
-  dot.className = 'sync-dot loading';
-  lbl.textContent = 'Cargando...';
-  var url = CSV_URL + '&nocache=' + Date.now();
-  fetch(url)
-    .then(function(r) { return r.text(); })
-    .then(function(text) {
-      var rows = parseCSV(text);
-      rawCount = rows.filter(function(r){ return r['HOSPITAL'] && r['HOSPITAL'].indexOf('CANTIDAD') !== 0; }).length;
-      agrupados = agrupar(rows);
-      dot.className = 'sync-dot';
-      var now = new Date().toLocaleTimeString('es-AR', {hour:'2-digit', minute:'2-digit'});
-      lbl.textContent = 'Actualizado ' + now;
-      document.getElementById('header-count').textContent = agrupados.length + ' equipos unicos';
-      document.getElementById('loading-screen').style.display = 'none';
-      document.getElementById('app').style.display = '';
-      renderDash();
-      renderFiltros();
+  var dot=document.getElementById('sync-dot'), lbl=document.getElementById('sync-label');
+  dot.className='sync-dot loading'; lbl.textContent='Cargando...';
+  fetch(CSV_URL+'&nocache='+Date.now())
+    .then(function(r){return r.text();})
+    .then(function(text){
+      var rows=parseCSV(text);
+      rawCount=rows.filter(function(r){return r['HOSPITAL']&&r['HOSPITAL'].indexOf('CANTIDAD')!==0;}).length;
+      agrupados=agrupar(rows);
+      dot.className='sync-dot';
+      var now=new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
+      lbl.textContent='Actualizado '+now;
+      document.getElementById('header-count').textContent=agrupados.length+' equipos unicos';
+      document.getElementById('loading-screen').style.display='none';
+      document.getElementById('app').style.display='';
+      renderDash(); renderFiltros();
     })
-    .catch(function(err) {
-      dot.className = 'sync-dot error';
-      lbl.textContent = 'Error al cargar';
-      document.getElementById('loading-screen').innerHTML = '<p style="color:#E24B4A;font-size:14px">No se pudo cargar el Sheet.<br><br><button onclick="cargarDatos(true)" style="padding:6px 14px;font-size:13px;border:0.5px solid rgba(0,0,0,0.25);border-radius:8px;background:#fff;cursor:pointer">Reintentar</button></p>';
+    .catch(function(){
+      dot.className='sync-dot error'; lbl.textContent='Error al cargar';
+      document.getElementById('loading-screen').innerHTML='<p style="color:#E24B4A;font-size:14px">No se pudo cargar el Sheet.<br><br><button onclick="cargarDatos(true)" style="margin-top:8px;padding:6px 14px;font-size:13px;border:0.5px solid rgba(0,0,0,0.25);border-radius:8px;background:#fff;cursor:pointer">Reintentar</button></p>';
     });
 }
 
 function showTab(t) {
-  var tabs = ['dashboard','proyectos','equipos'];
-  for (var i = 0; i < tabs.length; i++) {
-    document.getElementById('tab-'+tabs[i]).style.display = tabs[i]===t ? '' : 'none';
-  }
-  document.querySelectorAll('.tab').forEach(function(el,i){
-    el.classList.toggle('active', tabs[i]===t);
-  });
-  if (t==='dashboard') renderDash();
-  if (t==='proyectos') renderProyectos();
-  if (t==='equipos') renderTabla();
+  var all=['dashboard','proyectos','equipos'];
+  for (var i=0;i<all.length;i++) document.getElementById('tab-'+all[i]).style.display=all[i]===t?'':'none';
+  document.querySelectorAll('.tab').forEach(function(el,i){el.classList.toggle('active',all[i]===t);});
+  if(t==='dashboard') renderDash();
+  if(t==='proyectos') renderProyectos();
+  if(t==='equipos') renderTabla();
 }
 
-function barChart(id, counts, colorFn) {
-  var el = document.getElementById(id);
-  if (!el) return;
-  var entries = Object.entries(counts).sort(function(a,b){ return b[1]-a[1]; });
-  var max = 1;
-  for (var i=0;i<entries.length;i++) if (entries[i][1]>max) max=entries[i][1];
-  var html = '';
-  for (var i=0;i<entries.length;i++) {
-    var k=entries[i][0], v=entries[i][1];
-    html += '<div class="bar-row"><div class="bar-label" title="'+k+'">'+(k||'\u2014')+'</div><div class="bar-track"><div class="bar-fill" style="width:'+Math.round(v/max*100)+'%;background:'+colorFn(k)+'"></div></div><div class="bar-count">'+v+'</div></div>';
+function barChart(id,counts,colorFn) {
+  var el=document.getElementById(id); if(!el) return;
+  var entries=Object.entries(counts).sort(function(a,b){return b[1]-a[1];});
+  var max=1; for(var i=0;i<entries.length;i++) if(entries[i][1]>max) max=entries[i][1];
+  var html='';
+  for(var i=0;i<entries.length;i++){
+    var k=entries[i][0],v=entries[i][1];
+    html+='<div class="bar-row"><div class="bar-label" title="'+k+'">'+(k||'\u2014')+'</div><div class="bar-track"><div class="bar-fill" style="width:'+Math.round(v/max*100)+'%;background:'+colorFn(k)+'"></div></div><div class="bar-count">'+v+'</div></div>';
   }
-  el.innerHTML = html;
+  el.innerHTML=html;
 }
 
 function renderDash() {
-  var total = agrupados.length;
-  if (!total) return;
-  var conAp=0, cheq=0, hospsSet={}, totalUSD=0;
-  for (var i=0;i<agrupados.length;i++) {
+  var total=agrupados.length; if(!total) return;
+  var conAp=0,cheq=0,hospsSet={},totalUSD=0;
+  for(var i=0;i<agrupados.length;i++){
     var d=agrupados[i];
-    if (d.fecha_apertura) conAp++;
-    if (d.chequeado==='TRUE') cheq++;
+    if(d.fecha_apertura) conAp++;
+    if(d.chequeado==='TRUE') cheq++;
     hospsSet[d.hospital]=1;
     totalUSD+=d.p_total;
   }
-  var hosps = Object.keys(hospsSet).length;
-  document.getElementById('metrics').innerHTML =
+  document.getElementById('metrics').innerHTML=
     '<div class="metric"><div class="metric-label">Equipos unicos</div><div class="metric-value">'+total+'</div><div class="metric-sub">'+rawCount+' filas en Sheet</div></div>'+
-    '<div class="metric"><div class="metric-label">Hospitales</div><div class="metric-value">'+hosps+'</div></div>'+
+    '<div class="metric"><div class="metric-label">Hospitales</div><div class="metric-value">'+Object.keys(hospsSet).length+'</div></div>'+
     '<div class="metric"><div class="metric-label">Monto total estimado</div><div class="metric-value" style="font-size:15px">'+fmtUSD(totalUSD)+'</div></div>'+
     '<div class="metric"><div class="metric-label">Con fecha apertura</div><div class="metric-value">'+conAp+'</div><div class="metric-sub">'+Math.round(conAp/total*100)+'% del total</div></div>'+
     '<div class="metric"><div class="metric-label">Chequeados con SP</div><div class="metric-value">'+cheq+'</div><div class="metric-sub">'+Math.round(cheq/total*100)+'% del total</div></div>';
 
+  // Contar por estado usando los estados correctos
   var counts={};
-  for (var i=0;i<ESTADO_ORDER.length;i++) counts[ESTADO_ORDER[i]]=0;
-  for (var i=0;i<agrupados.length;i++) { var e=agrupados[i].estado||'SIN AVANCE'; counts[e]=(counts[e]||0)+1; }
+  for(var i=0;i<ESTADOS.length;i++) counts[ESTADOS[i].v]=0;
+  for(var i=0;i<agrupados.length;i++) { var e=agrupados[i].estado; counts[e]=(counts[e]||0)+1; }
 
-  var genHTML='', legendHTML='', progHTML='';
-  for (var i=0;i<ESTADO_ORDER.length;i++) {
-    var e=ESTADO_ORDER[i], c=counts[e]||0, pct=Math.round(c/total*100);
-    genHTML+='<div class="prog-seg" style="width:'+pct+'%;background:'+ESTADO_COLOR[e]+'" title="'+e+': '+c+' ('+pct+'%)"></div>';
-    legendHTML+='<div class="prog-legend-item"><div class="prog-dot" style="background:'+ESTADO_COLOR[e]+'"></div><span>'+e+' ('+c+')</span></div>';
-    progHTML+='<div class="prog-single"><div class="prog-header"><span class="prog-name">'+e+'</span><span class="prog-pct">'+c+' equipos &middot; '+pct+'%</span></div><div class="prog-track"><div class="prog-fill" style="width:'+pct+'%;background:'+ESTADO_COLOR[e]+'"></div></div></div>';
+  var genHTML='',legendHTML='',progHTML='';
+  for(var i=0;i<ESTADOS.length;i++){
+    var est=ESTADOS[i], c=counts[est.v]||0, pct=Math.round(c/total*100);
+    genHTML+='<div class="prog-seg" style="width:'+pct+'%;background:'+est.color+'" title="'+est.v+': '+c+' ('+pct+'%)"></div>';
+    legendHTML+='<div class="prog-legend-item"><div class="prog-dot" style="background:'+est.color+'"></div><span>'+est.v+' ('+c+')</span></div>';
+    progHTML+='<div class="prog-single"><div class="prog-header"><span class="prog-name">'+est.v+'</span><span class="prog-pct">'+c+' equipos &middot; '+pct+'%</span></div><div class="prog-track"><div class="prog-fill" style="width:'+pct+'%;background:'+est.color+'"></div></div></div>';
   }
   document.getElementById('prog-gen').innerHTML=genHTML;
   document.getElementById('prog-legend').innerHTML=legendHTML;
   document.getElementById('prog-estados').innerHTML=progHTML;
 
   var hospC={};
-  for (var i=0;i<agrupados.length;i++) { var h=agrupados[i].hospital; hospC[h]=(hospC[h]||0)+1; }
-  barChart('ch-hosp', Object.fromEntries(Object.entries(hospC).sort(function(a,b){return b[1]-a[1];}).slice(0,10)), function(){ return '#7F77DD'; });
+  for(var i=0;i<agrupados.length;i++){hospC[agrupados[i].hospital]=(hospC[agrupados[i].hospital]||0)+1;}
+  barChart('ch-hosp',Object.fromEntries(Object.entries(hospC).sort(function(a,b){return b[1]-a[1];}).slice(0,10)),function(){return '#7F77DD';});
 
   var tipoC={};
-  for (var i=0;i<agrupados.length;i++) { var t=agrupados[i].tipo_proyecto; if(t) tipoC[t]=(tipoC[t]||0)+1; }
-  barChart('ch-tipo', tipoC, function(k){ return TIPO_COLOR[k]||'#888780'; });
+  for(var i=0;i<agrupados.length;i++){var t=agrupados[i].tipo_proyecto;if(t)tipoC[t]=(tipoC[t]||0)+1;}
+  barChart('ch-tipo',tipoC,function(k){return TIPO_COLOR[k]||'#888780';});
 
   var hoy=new Date(); hoy.setHours(0,0,0,0);
   var prox=[];
-  for (var i=0;i<agrupados.length;i++) {
-    if (agrupados[i].fecha_apertura) {
+  for(var i=0;i<agrupados.length;i++){
+    if(agrupados[i].fecha_apertura){
       var diff=Math.ceil((new Date(agrupados[i].fecha_apertura+'T00:00:00')-hoy)/86400000);
       prox.push({d:agrupados[i],diff:diff});
     }
   }
-  prox.sort(function(a,b){return a.diff-b.diff;});
-  prox=prox.slice(0,10);
+  prox.sort(function(a,b){return a.diff-b.diff;}); prox=prox.slice(0,10);
   var apEl=document.getElementById('ch-apertura');
-  if (!prox.length) {
+  if(!prox.length){
     apEl.innerHTML='<div style="color:var(--t3);font-size:13px;padding:8px">Ningun equipo tiene fecha de apertura cargada.</div>';
   } else {
     var rows='';
-    for (var i=0;i<prox.length;i++) {
+    for(var i=0;i<prox.length;i++){
       var d=prox[i].d;
       rows+='<tr><td style="font-weight:500">'+d.hospital+'</td><td>'+d.equipo+'</td><td style="color:var(--t2)">'+(d.nombre_proyecto||'\u2014')+'</td><td style="color:var(--t3)">'+(d.expediente||'\u2014')+'</td><td style="white-space:nowrap">'+fmtFecha(d.fecha_apertura)+'</td><td>'+badge(d.estado)+'</td><td>'+diasChip(d.fecha_apertura)+'</td></tr>';
     }
@@ -422,29 +445,26 @@ function renderDash() {
 
 function renderProyectos() {
   var grupos={};
-  for (var i=0;i<agrupados.length;i++) {
+  for(var i=0;i<agrupados.length;i++){
     var d=agrupados[i], k=d.nombre_proyecto||'(sin proyecto)';
-    if (!grupos[k]) grupos[k]=[];
+    if(!grupos[k]) grupos[k]=[];
     grupos[k].push(d);
   }
   var sorted=Object.entries(grupos).sort(function(a,b){return b[1].length-a[1].length;});
-  var totalGral=0;
-  for (var i=0;i<agrupados.length;i++) totalGral+=agrupados[i].p_total;
+  var totalGral=0; for(var i=0;i<agrupados.length;i++) totalGral+=agrupados[i].p_total;
   document.getElementById('proy-total').textContent='Total: '+fmtUSD(totalGral)+' \u00b7 '+sorted.length+' proyectos';
   var html='';
-  for (var idx=0;idx<sorted.length;idx++) {
+  for(var idx=0;idx<sorted.length;idx++){
     var nombre=sorted[idx][0], items=sorted[idx][1];
-    var monto=0;
-    for (var i=0;i<items.length;i++) monto+=items[i].p_total;
-    var hospsSet={};
-    for (var i=0;i<items.length;i++) hospsSet[items[i].hospital]=1;
+    var monto=0; for(var i=0;i<items.length;i++) monto+=items[i].p_total;
+    var hospsSet={}; for(var i=0;i<items.length;i++) hospsSet[items[i].hospital]=1;
     var hosps=Object.keys(hospsSet).sort().join(', ');
     var estados={};
-    for (var i=0;i<items.length;i++) { var e=items[i].estado; estados[e]=(estados[e]||0)+1; }
+    for(var i=0;i<items.length;i++){var e=items[i].estado; estados[e]=(estados[e]||0)+1;}
     var badgesHTML='';
-    for (var e in estados) badgesHTML+=badge(e)+' <span style="font-size:11px;color:var(--t3)">\u00d7'+estados[e]+'</span> ';
+    for(var e in estados) badgesHTML+=badge(e)+' <span style="font-size:11px;color:var(--t3)">\u00d7'+estados[e]+'</span> ';
     var rowsHTML='';
-    for (var i=0;i<items.length;i++) {
+    for(var i=0;i<items.length;i++){
       var d=items[i];
       rowsHTML+='<tr><td style="font-weight:500">'+d.hospital+'</td><td>'+d.equipo+'</td><td style="color:var(--t2)">'+(d.tipo||'\u2014')+'</td><td style="text-align:center;font-weight:500">'+(d.q_total||'\u2014')+'</td><td style="white-space:nowrap">'+fmtUSD(d.p_total)+'</td><td style="white-space:nowrap">'+fmtFecha(d.fecha_apertura)+'</td><td>'+diasChip(d.fecha_apertura)+'</td><td>'+badge(d.estado)+'</td></tr>';
     }
@@ -453,51 +473,63 @@ function renderProyectos() {
   document.getElementById('proy-container').innerHTML=html;
 }
 
-function toggleProy(idx) {
+function toggleProy(idx){
   document.getElementById('proy-body-'+idx).classList.toggle('open');
   document.getElementById('arrow-'+idx).classList.toggle('open');
 }
 
-function renderFiltros() {
-  var hospsSet={}, tiposSet={};
-  for (var i=0;i<agrupados.length;i++) {
-    if (agrupados[i].hospital) hospsSet[agrupados[i].hospital]=1;
-    if (agrupados[i].tipo_proyecto) tiposSet[agrupados[i].tipo_proyecto]=1;
+function renderFiltros(){
+  var hospsSet={},tiposSet={};
+  for(var i=0;i<agrupados.length;i++){
+    if(agrupados[i].hospital) hospsSet[agrupados[i].hospital]=1;
+    if(agrupados[i].tipo_proyecto) tiposSet[agrupados[i].tipo_proyecto]=1;
   }
   var hosps=Object.keys(hospsSet).sort(), tipos=Object.keys(tiposSet).sort();
   var selH=document.getElementById('f-hosp'), selT=document.getElementById('f-tipo');
   selH.innerHTML='<option value="">Todos los hospitales</option>'+hosps.map(function(h){return '<option>'+h+'</option>';}).join('');
-  selT.innerHTML='<option value="">Todos los tipos</option>'+tipos.map(function(t){return '<option>'+t+'</option>';}).join('');
+  selT.innerHTML='<option value="">Todos los tipos de proyecto</option>'+tipos.map(function(t){return '<option>'+t+'</option>';}).join('');
 }
 
-function renderTabla() {
+function renderTabla(){
   var q=(document.getElementById('search').value||'').toLowerCase();
   var fE=document.getElementById('f-estado').value||'';
   var fH=document.getElementById('f-hosp').value||'';
   var fT=document.getElementById('f-tipo').value||'';
   var filtered=[];
-  for (var i=0;i<agrupados.length;i++) {
+  for(var i=0;i<agrupados.length;i++){
     var d=agrupados[i];
-    if (fE && d.estado!==fE) continue;
-    if (fH && d.hospital!==fH) continue;
-    if (fT && d.tipo_proyecto!==fT) continue;
-    if (q) {
-      var txt=(d.hospital+d.equipo+d.tipo+d.nombre_proyecto+d.expediente+d.licitacion).toLowerCase();
-      if (txt.indexOf(q)===-1) continue;
-    }
+    if(fE&&d.estado!==fE) continue;
+    if(fH&&d.hospital!==fH) continue;
+    if(fT&&d.tipo_proyecto!==fT) continue;
+    if(q){var txt=(d.hospital+d.equipo+d.tipo+d.nombre_proyecto+d.expediente+d.licitacion).toLowerCase();if(txt.indexOf(q)===-1) continue;}
     filtered.push(d);
   }
-  var totalF=0, totalG=0;
-  for (var i=0;i<filtered.length;i++) totalF+=filtered[i].p_total;
-  for (var i=0;i<agrupados.length;i++) totalG+=agrupados[i].p_total;
+  var totalF=0,totalG=0;
+  for(var i=0;i<filtered.length;i++) totalF+=filtered[i].p_total;
+  for(var i=0;i<agrupados.length;i++) totalG+=agrupados[i].p_total;
   document.getElementById('total-bar').innerHTML='<span class="total-label">Total visible:</span><span class="total-value">'+fmtUSD(totalF)+'</span><span class="total-sub">de '+fmtUSD(totalG)+' total &middot; '+filtered.length+' de '+agrupados.length+' equipos</span>';
   var tbody=document.getElementById('tbody'), empty=document.getElementById('empty');
-  if (!filtered.length) { tbody.innerHTML=''; empty.style.display=''; return; }
+  if(!filtered.length){tbody.innerHTML='';empty.style.display='';return;}
   empty.style.display='none';
   var rows='';
-  for (var i=0;i<filtered.length;i++) {
+  for(var i=0;i<filtered.length;i++){
     var d=filtered[i];
-    rows+='<tr><td style="font-weight:500">'+d.hospital+'</td><td>'+d.equipo+(d.tipo?' <span class="chip">'+d.tipo+'</span>':'')+'</td><td style="color:var(--t2)">'+(d.tipo||'\u2014')+'</td><td style="text-align:center;font-weight:500">'+(d.q_total||'\u2014')+'</td><td style="white-space:nowrap">'+(d.p_unit||'\u2014')+'</td><td style="white-space:nowrap">'+fmtUSD(d.p_total)+'</td><td style="color:var(--t2);max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="'+(d.nombre_proyecto||'')+'">'+(d.nombre_proyecto||'\u2014')+'</td><td>'+(d.tipo_proyecto||'\u2014')+'</td><td style="color:var(--t3)">'+(d.expediente||'\u2014')+'</td><td style="color:var(--t3)">'+(d.licitacion||'\u2014')+'</td><td style="white-space:nowrap">'+fmtFecha(d.fecha_apertura)+' '+diasChip(d.fecha_apertura)+'</td><td>'+badge(d.estado)+'</td><td><span class="tag-cheq '+(d.chequeado==='TRUE'?'tag-si':'tag-no')+'">'+(d.chequeado==='TRUE'?'Si':'No')+'</span></td></tr>';
+    rows+='<tr>'+
+      '<td style="font-weight:500">'+d.hospital+'</td>'+
+      '<td>'+d.equipo+'</td>'+
+      '<td style="color:var(--t2)">'+(d.tipo||'\u2014')+'</td>'+
+      '<td style="text-align:center;font-weight:500">'+(d.q_total||'\u2014')+'</td>'+
+      '<td style="white-space:nowrap">'+(d.p_unit||'\u2014')+'</td>'+
+      '<td style="white-space:nowrap">'+fmtUSD(d.p_total)+'</td>'+
+      '<td style="color:var(--t2);max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="'+(d.nombre_proyecto||'')+'">'+(d.nombre_proyecto||'\u2014')+'</td>'+
+      '<td>'+(d.tipo_proyecto||'\u2014')+'</td>'+
+      '<td style="color:var(--t3);text-align:center">'+(d.anio_entrega||'\u2014')+'</td>'+
+      '<td style="color:var(--t3)">'+(d.expediente||'\u2014')+'</td>'+
+      '<td style="color:var(--t3)">'+(d.licitacion||'\u2014')+'</td>'+
+      '<td style="white-space:nowrap">'+fmtFecha(d.fecha_apertura)+' '+diasChip(d.fecha_apertura)+'</td>'+
+      '<td>'+badge(d.estado)+'</td>'+
+      '<td><span class="tag-cheq '+(d.chequeado==='TRUE'?'tag-si':'tag-no')+'">'+(d.chequeado==='TRUE'?'Si':'No')+'</span></td>'+
+    '</tr>';
   }
   tbody.innerHTML=rows;
   document.getElementById('tfoot').textContent='Mostrando '+filtered.length+' de '+agrupados.length+' equipos unicos';
