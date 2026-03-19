@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adquisiciones 2026</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f5f5f3;color:#1a1a1a;min-height:100vh}
+:root{--bg1:#ffffff;--bg2:#f1efe8;--t1:#1a1a1a;--t2:#5f5e5a;--t3:#888780;--b1:rgba(0,0,0,0.12);--b2:rgba(0,0,0,0.25);--r1:8px;--r2:12px}
+@media(prefers-color-scheme:dark){
+  :root{--bg1:#1e1e1c;--bg2:#2a2a28;--t1:#f0ede6;--t2:#b4b2a9;--t3:#888780;--b1:rgba(255,255,255,0.12);--b2:rgba(255,255,255,0.25)}
+  body{background:#141412;color:#f0ede6}
+  .badge-sin{background:#2C2C2A;color:#D3D1C7}.badge-pliego{background:#26215C;color:#CECBF6}
+  .badge-firmado{background:#042C53;color:#B5D4F4}.badge-adj{background:#173404;color:#C0DD97}
+  .badge-noc{background:#501313;color:#F7C1C1}
+  .tag-si{background:#173404;color:#C0DD97}.tag-no{background:#2C2C2A;color:#B4B2A9}
+  .dias-rojo{background:#501313;color:#F7C1C1}.dias-naranja{background:#412402;color:#FAC775}
+  .dias-verde{background:#173404;color:#C0DD97}.dias-gris{background:#2C2C2A;color:#D3D1C7}
+}
+header{background:var(--bg1);border-bottom:0.5px solid var(--b1);padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.header-left{display:flex;align-items:baseline;gap:12px}
+header h1{font-size:17px;font-weight:500}
+header span{font-size:13px;color:var(--t3)}
+.sync-btn{padding:5px 12px;font-size:12px;border:0.5px solid var(--b2);border-radius:var(--r1);background:var(--bg1);color:var(--t2);cursor:pointer;display:flex;align-items:center;gap:6px}
+.sync-btn:hover{background:var(--bg2)}
+.sync-dot{width:7px;height:7px;border-radius:50%;background:#639922;flex-shrink:0}
+.sync-dot.loading{background:#EF9F27;animation:pulse 1s infinite}
+.sync-dot.error{background:#E24B4A}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.container{max-width:1300px;margin:0 auto;padding:1.5rem}
+.tabs{display:flex;gap:4px;margin-bottom:1.5rem;border-bottom:0.5px solid var(--b1)}
+.tab{padding:8px 16px;font-size:13px;cursor:pointer;border:none;background:none;color:var(--t2);border-bottom:2px solid transparent;margin-bottom:-0.5px}
+.tab.active{color:var(--t1);border-bottom:2px solid var(--t1);font-weight:500}
+.metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:1.5rem}
+.metric{background:var(--bg2);border-radius:var(--r1);padding:1rem}
+.metric-label{font-size:12px;color:var(--t2);margin-bottom:4px}
+.metric-value{font-size:22px;font-weight:500}
+.metric-sub{font-size:11px;color:var(--t3);margin-top:2px}
+.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:1.5rem}
+.card{background:var(--bg1);border:0.5px solid var(--b1);border-radius:var(--r2);padding:1rem 1.25rem}
+.card-full{background:var(--bg1);border:0.5px solid var(--b1);border-radius:var(--r2);padding:1rem 1.25rem;margin-bottom:1.5rem}
+.card-title{font-size:13px;font-weight:500;color:var(--t2);margin-bottom:12px}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.bar-label{font-size:12px;color:var(--t2);width:110px;text-align:right;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar-track{flex:1;height:14px;background:var(--bg2);border-radius:7px;overflow:hidden}
+.bar-fill{height:100%;border-radius:7px}
+.bar-count{font-size:12px;color:var(--t2);width:28px;text-align:right;flex-shrink:0}
+.prog-single{margin-bottom:10px}
+.prog-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+.prog-name{font-size:12px;color:var(--t2);font-weight:500}
+.prog-pct{font-size:12px;color:var(--t3)}
+.prog-track{height:10px;background:var(--bg2);border-radius:5px;overflow:hidden}
+.prog-fill{height:100%;border-radius:5px}
+.prog-general-track{height:18px;background:var(--bg2);border-radius:9px;overflow:hidden;display:flex;margin-bottom:6px}
+.prog-segment{height:100%}
+.prog-legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+.prog-legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--t2)}
+.prog-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+.urg-table{width:100%;border-collapse:collapse;font-size:13px}
+.urg-table th{text-align:left;padding:7px 10px;color:var(--t2);font-weight:500;border-bottom:0.5px solid var(--b1);font-size:12px}
+.urg-table td{padding:7px 10px;border-bottom:0.5px solid var(--b1);vertical-align:middle}
+.urg-table tr:last-child td{border-bottom:none}
+.dias-chip{display:inline-block;font-size:11px;font-weight:500;padding:2px 9px;border-radius:20px;white-space:nowrap}
+.dias-rojo{background:#FCEBEB;color:#A32D2D}.dias-naranja{background:#FAEEDA;color:#633806}
+.dias-verde{background:#EAF3DE;color:#27500A}.dias-gris{background:#F1EFE8;color:#444441}
+.proy-card{background:var(--bg1);border:0.5px solid var(--b1);border-radius:var(--r2);margin-bottom:10px;overflow:hidden}
+.proy-header{padding:.85rem 1.25rem;cursor:pointer;display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.proy-header:hover{background:var(--bg2)}
+.proy-name{font-size:14px;font-weight:500;flex:1}
+.proy-meta{display:flex;align-items:center;gap:12px;flex-shrink:0}
+.proy-count{font-size:12px;color:var(--t2);background:var(--bg2);padding:2px 8px;border-radius:20px}
+.proy-monto{font-size:13px;font-weight:500}
+.proy-arrow{font-size:13px;color:var(--t3);transition:transform .2s;flex-shrink:0;margin-top:2px}
+.proy-arrow.open{transform:rotate(90deg)}
+.proy-body{display:none;border-top:0.5px solid var(--b1);overflow-x:auto}
+.proy-body.open{display:block}
+.proy-table{width:100%;border-collapse:collapse;font-size:12px;min-width:650px}
+.proy-table th{padding:6px 10px;font-size:11px;color:var(--t2);font-weight:500;background:var(--bg2);text-align:left;border-bottom:0.5px solid var(--b1)}
+.proy-table td{padding:6px 10px;border-bottom:0.5px solid var(--b1)}
+.proy-table tr:last-child td{border-bottom:none}
+.proy-table tr:hover td{background:var(--bg2)}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.section-title{font-size:15px;font-weight:500}
+.filters{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.filters input,.filters select{font-size:13px;padding:6px 10px;border:0.5px solid var(--b2);border-radius:var(--r1);background:var(--bg1);color:var(--t1)}
+.filters input{flex:1;min-width:180px}
+.total-bar{background:var(--bg2);border-radius:var(--r1);padding:.6rem 1rem;margin-bottom:12px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.total-bar-label{font-size:12px;color:var(--t2)}
+.total-bar-value{font-size:18px;font-weight:500}
+.total-bar-sub{font-size:12px;color:var(--t3)}
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500;white-space:nowrap}
+.badge-sin{background:#F1EFE8;color:#444441}.badge-pliego{background:#EEEDFE;color:#3C3489}
+.badge-firmado{background:#E6F1FB;color:#0C447C}.badge-adj{background:#EAF3DE;color:#27500A}
+.badge-noc{background:#FCEBEB;color:#791F1F}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:900px}
+th{text-align:left;padding:8px 10px;color:var(--t2);font-weight:500;border-bottom:0.5px solid var(--b1);white-space:nowrap;background:var(--bg1);position:sticky;top:0;z-index:1}
+td{padding:7px 10px;border-bottom:0.5px solid var(--b1);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg2)}
+.chip{display:inline-block;font-size:11px;padding:1px 6px;border-radius:4px;background:var(--bg2);color:var(--t2)}
+.tag-cheq{display:inline-block;font-size:11px;padding:1px 7px;border-radius:20px}
+.tag-si{background:#EAF3DE;color:#27500A}.tag-no{background:#F1EFE8;color:#5F5E5A}
+.empty{text-align:center;padding:3rem;color:var(--t3);font-size:14px}
+.loading-screen{text-align:center;padding:4rem;color:var(--t3)}
+.loading-screen p{font-size:14px;margin-top:8px}
+@media(max-width:700px){.charts-grid{grid-template-columns:1fr}.metric-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-left">
+    <h1>Adquisiciones 2026</h1>
+    <span id="header-count"></span>
+  </div>
+  <button class="sync-btn" onclick="cargarDatos(true)">
+    <div class="sync-dot" id="sync-dot"></div>
+    <span id="sync-label">Actualizar</span>
+  </button>
+</header>
+
+<div class="container">
+  <div id="loading-screen" class="loading-screen">
+    <div class="sync-dot loading" style="width:12px;height:12px;margin:0 auto"></div>
+    <p>Cargando datos desde Google Sheets...</p>
+  </div>
+
+  <div id="app" style="display:none">
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('dashboard')">Dashboard</button>
+      <button class="tab" onclick="showTab('proyectos')">Por proyecto</button>
+      <button class="tab" onclick="showTab('equipos')">Equipos</button>
+    </div>
+
+    <div id="tab-dashboard">
+      <div class="metric-grid" id="metrics"></div>
+      <div class="card-full">
+        <div class="card-title">Progreso general del plan 2026</div>
+        <div class="prog-general-track" id="prog-general"></div>
+        <div class="prog-legend" id="prog-legend"></div>
+      </div>
+      <div class="card-full">
+        <div class="card-title">Avance por estado</div>
+        <div id="prog-estados"></div>
+      </div>
+      <div class="charts-grid">
+        <div class="card"><div class="card-title">Por hospital (top 10)</div><div id="ch-hosp"></div></div>
+        <div class="card"><div class="card-title">Por tipo de proyecto</div><div id="ch-tipo"></div></div>
+      </div>
+      <div class="card-full">
+        <div class="card-title">Próximas aperturas</div>
+        <div id="ch-apertura"></div>
+      </div>
+    </div>
+
+    <div id="tab-proyectos" style="display:none">
+      <div class="section-header">
+        <div class="section-title">Agrupado por proyecto</div>
+        <div id="proy-total" style="font-size:13px;color:var(--t2)"></div>
+      </div>
+      <div id="proy-container"></div>
+    </div>
+
+    <div id="tab-equipos" style="display:none">
+      <div class="section-header">
+        <div class="section-title">Equipos registrados</div>
+        <div style="font-size:12px;color:var(--t3)">Los datos se editan en Google Sheets</div>
+      </div>
+      <div class="filters">
+        <input type="text" id="search" placeholder="Buscar equipo, hospital, proyecto..." oninput="renderTabla()">
+        <select id="f-estado" onchange="renderTabla()">
+          <option value="">Todos los estados</option>
+          <option>SIN AVANCE</option><option>ARMADO DE PLIEGO</option>
+          <option>PLIEGO FIRMADO</option><option>2026</option><option>NO SE COMPRÓ</option>
+        </select>
+        <select id="f-hosp" onchange="renderTabla()"><option value="">Todos los hospitales</option></select>
+        <select id="f-tipo" onchange="renderTabla()"><option value="">Todos los tipos</option></select>
+      </div>
+      <div class="total-bar" id="total-bar"></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Hospital</th><th>Equipo</th><th>Tipo</th>
+            <th>Q total</th><th>Hospitales</th><th>P. Unit.</th><th>P. Total</th>
+            <th>Proyecto</th><th>Tipo proy.</th><th>Expediente</th>
+            <th>Licitación</th><th>Apertura</th><th>Estado</th><th>Cheq.</th>
+          </tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+      <div id="empty" class="empty" style="display:none">Sin resultados.</div>
+      <div id="tfoot" style="font-size:12px;color:var(--t3);padding:8px 4px;text-align:right"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTMwWUwo7BQxyUhUAQtapVGDT5vnRv28LzwF4mgv7LU4vGbJoxtNgwV-pI_It9bh5aSCtg0lwQLtPyW/pub?gid=0&single=true&output=csv';
+
+const ESTADO_CLS   = {'SIN AVANCE':'sin','ARMADO DE PLIEGO':'pliego','PLIEGO FIRMADO':'firmado','2026':'adj','NO SE COMPRÓ':'noc'};
+const ESTADO_COLOR = {'SIN AVANCE':'#888780','ARMADO DE PLIEGO':'#7F77DD','PLIEGO FIRMADO':'#378ADD','2026':'#639922','NO SE COMPRÓ':'#E24B4A'};
+const ESTADO_ORDER = ['SIN AVANCE','ARMADO DE PLIEGO','PLIEGO FIRMADO','2026','NO SE COMPRÓ'];
+const TIPO_COLOR   = {'OBRA':'#378ADD','SUMAR':'#1D9E75','SOLO PROYECTO':'#EF9F27','2027':'#888780','(NO ENTIENDO)':'#D4537E'};
+
+let datos = []; // filas crudas del sheet
+let agrupados = []; // filas agrupadas por hospital+equipo+proyecto
+
+/* ---- CSV PARSER ---- */
+function parseCSV(text) {
+  const lines = text.trim().split(/?
+/);
+  const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g,''));
+  return lines.slice(1).map(line => {
+    const vals = [];
+    let cur = '', inQ = false;
+    for(let i=0;i<line.length;i++){
+      if(line[i]==='"') inQ=!inQ;
+      else if(line[i]===','&&!inQ){ vals.push(cur.trim()); cur=''; }
+      else cur+=line[i];
+    }
+    vals.push(cur.trim());
+    const obj = {};
+    headers.forEach((h,i) => obj[h] = vals[i]||'');
+    return obj;
+  });
+}
+
+/* ---- AGRUPAR: hospital + equipo + proyecto → sumar Q ---- */
+function agrupar(rows) {
+  const mapa = {};
+  rows.forEach(r => {
+    if(!r['HOSPITAL'] || r['HOSPITAL'].startsWith('CANTIDAD')) return;
+    const key = (r['HOSPITAL']||'') + '|||' + (r['EQUIPO']||'') + '|||' + (r['NOMBRE PROYECTO']||'');
+    if(!mapa[key]){
+      mapa[key] = {
+        hospital: r['HOSPITAL'],
+        equipo: r['EQUIPO'],
+        tipo: r['TIPO'],
+        q_total: 0,
+        hospitales_lista: new Set(),
+        p_unit: r['P. UNIT'],
+        p_total_num: 0,
+        chequeado: r['CHEQUEADO CON SP'],
+        tipo_proyecto: r['TIPO PROYECTO'],
+        anio_entrega: r['AÑO ENTREGA'],
+        nombre_proyecto: r['NOMBRE PROYECTO'],
+        estado: r['ESTADO']||'SIN AVANCE',
+        expediente: r['EXPEDIENTE'],
+        licitacion: r['LICITACION'],
+        renglon: r['RENGLON'],
+        fecha_apertura: r['FECHA DE APERTURA'],
+        observacion: r['OBSERVACION'],
+        filas: 0
+      };
+    }
+    const g = mapa[key];
+    g.filas++;
+    g.hospitales_lista.add(r['HOSPITAL']);
+    const q = parseInt(r['Q SOLICIT.'])||0;
+    g.q_total += q;
+    g.p_total_num += parseUSD(r['P. TOTAL']);
+    // si hay estado más avanzado, usar ese
+    const orden = ESTADO_ORDER.indexOf(r['ESTADO']||'SIN AVANCE');
+    const ordenActual = ESTADO_ORDER.indexOf(g.estado);
+    if(orden > ordenActual) g.estado = r['ESTADO']||'SIN AVANCE';
+    // fecha apertura: usar la más próxima no vacía
+    if(r['FECHA DE APERTURA'] && !g.fecha_apertura) g.fecha_apertura = r['FECHA DE APERTURA'];
+    if(r['EXPEDIENTE'] && !g.expediente) g.expediente = r['EXPEDIENTE'];
+    if(r['LICITACION'] && !g.licitacion) g.licitacion = r['LICITACION'];
+  });
+  return Object.values(mapa).map(g => ({
+    ...g,
+    hospitales_lista: [...g.hospitales_lista],
+    p_total: g.p_total_num
+  }));
+}
+
+function parseUSD(str){
+  if(!str) return 0;
+  const n = parseFloat(String(str).replace(/[^0-9.]/g,''));
+  return isNaN(n) ? 0 : n;
+}
+function fmtUSD(n){
+  if(!n) return '—';
+  return 'USD ' + n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+function fmtFecha(s){ if(!s) return '—'; const p=s.split('-'); return p.length===3?p[2]+'/'+p[1]+'/'+p[0]:s; }
+function diasChip(fechaStr){
+  if(!fechaStr) return '';
+  const hoy=new Date(); hoy.setHours(0,0,0,0);
+  const f=new Date(fechaStr+'T00:00:00');
+  const diff=Math.ceil((f-hoy)/86400000);
+  if(diff<0)  return '<span class="dias-chip dias-gris">Vencida</span>';
+  if(diff===0) return '<span class="dias-chip dias-rojo">Hoy</span>';
+  if(diff<=7)  return '<span class="dias-chip dias-rojo">'+diff+' días</span>';
+  if(diff<=30) return '<span class="dias-chip dias-naranja">'+diff+' días</span>';
+  return '<span class="dias-chip dias-verde">'+diff+' días</span>';
+}
+function badge(e){ return '<span class="badge badge-'+(ESTADO_CLS[e]||'sin')+'">'+( e||'SIN AVANCE')+'</span>'; }
+
+/* ---- CARGAR DATOS ---- */
+async function cargarDatos(manual=false){
+  const dot = document.getElementById('sync-dot');
+  const lbl = document.getElementById('sync-label');
+  dot.className='sync-dot loading';
+  lbl.textContent='Cargando...';
+
+  try {
+    const resp = await fetch(CSV_URL + '&t=' + Date.now());
+    if(!resp.ok) throw new Error('HTTP '+resp.status);
+    const text = await resp.text();
+    const rows = parseCSV(text);
+    datos = rows.filter(r => r['HOSPITAL'] && !r['HOSPITAL'].startsWith('CANTIDAD'));
+    agrupados = agrupar(rows);
+
+    dot.className='sync-dot';
+    const now = new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
+    lbl.textContent = 'Actualizado ' + now;
+
+    document.getElementById('loading-screen').style.display='none';
+    document.getElementById('app').style.display='';
+    document.getElementById('header-count').textContent = agrupados.length + ' equipos únicos · ' + datos.length + ' filas';
+
+    renderDash();
+    renderFiltros();
+    const tabActiva = document.querySelector('.tab.active');
+    if(tabActiva){
+      const tabs = [...document.querySelectorAll('.tab')];
+      const idx = tabs.indexOf(tabActiva);
+      const nombres = ['dashboard','proyectos','equipos'];
+      if(idx===1) renderProyectos();
+      if(idx===2) renderTabla();
+    }
+    if(manual) { dot.className='sync-dot'; }
+
+  } catch(err) {
+    dot.className='sync-dot error';
+    lbl.textContent='Error al cargar';
+    document.getElementById('loading-screen').innerHTML =
+      '<p style="color:#E24B4A;font-size:14px">No se pudo cargar el Sheet.<br><button onclick="cargarDatos(true)" style="margin-top:8px;padding:6px 14px;font-size:13px;border:0.5px solid var(--b2);border-radius:8px;background:var(--bg1);color:var(--t1);cursor:pointer">Reintentar</button></p>';
+  }
+}
+
+function showTab(t){
+  ['dashboard','proyectos','equipos'].forEach(id=>{
+    document.getElementById('tab-'+id).style.display=id===t?'':'none';
+  });
+  document.querySelectorAll('.tab').forEach((el,i)=>{
+    el.classList.toggle('active',['dashboard','proyectos','equipos'][i]===t);
+  });
+  if(t==='dashboard') renderDash();
+  if(t==='proyectos') renderProyectos();
+  if(t==='equipos') renderTabla();
+}
+
+/* ---- DASHBOARD ---- */
+function renderDash(){
+  const total = agrupados.length;
+  const conAp = agrupados.filter(d=>d.fecha_apertura).length;
+  const cheq  = agrupados.filter(d=>d.chequeado==='TRUE').length;
+  const hosps = new Set(agrupados.map(d=>d.hospital)).size;
+  const totalUSD = agrupados.reduce((a,d)=>a+d.p_total,0);
+
+  document.getElementById('metrics').innerHTML = `
+    <div class="metric"><div class="metric-label">Equipos únicos</div><div class="metric-value">${total}</div><div class="metric-sub">${datos.length} filas en Sheet</div></div>
+    <div class="metric"><div class="metric-label">Hospitales</div><div class="metric-value">${hosps}</div></div>
+    <div class="metric"><div class="metric-label">Monto total estimado</div><div class="metric-value" style="font-size:15px">${fmtUSD(totalUSD)}</div></div>
+    <div class="metric"><div class="metric-label">Con fecha apertura</div><div class="metric-value">${conAp}</div><div class="metric-sub">${Math.round(conAp/total*100)}% del total</div></div>
+    <div class="metric"><div class="metric-label">Chequeados con SP</div><div class="metric-value">${cheq}</div><div class="metric-sub">${Math.round(cheq/total*100)}% del total</div></div>
+  `;
+
+  const counts={};
+  ESTADO_ORDER.forEach(e=>counts[e]=0);
+  agrupados.forEach(d=>{ counts[d.estado]=(counts[d.estado]||0)+1; });
+
+  document.getElementById('prog-general').innerHTML = ESTADO_ORDER.map(e=>{
+    const pct=Math.round(counts[e]/total*100);
+    return `<div class="prog-segment" style="width:${pct}%;background:${ESTADO_COLOR[e]}" title="${e}: ${counts[e]} (${pct}%)"></div>`;
+  }).join('');
+  document.getElementById('prog-legend').innerHTML = ESTADO_ORDER.map(e=>`
+    <div class="prog-legend-item"><div class="prog-dot" style="background:${ESTADO_COLOR[e]}"></div><span>${e} (${counts[e]})</span></div>`).join('');
+
+  document.getElementById('prog-estados').innerHTML = ESTADO_ORDER.map(e=>{
+    const pct=Math.round(counts[e]/total*100);
+    return `<div class="prog-single">
+      <div class="prog-header"><span class="prog-name">${e}</span><span class="prog-pct">${counts[e]} equipos · ${pct}%</span></div>
+      <div class="prog-track"><div class="prog-fill" style="width:${pct}%;background:${ESTADO_COLOR[e]}"></div></div>
+    </div>`;
+  }).join('');
+
+  const hospC={};
+  agrupados.forEach(d=>{hospC[d.hospital]=(hospC[d.hospital]||0)+1;});
+  barChart('ch-hosp', Object.fromEntries(Object.entries(hospC).sort((a,b)=>b[1]-a[1]).slice(0,10)), k=>'#7F77DD');
+
+  const tipoC={};
+  agrupados.forEach(d=>{if(d.tipo_proyecto)tipoC[d.tipo_proyecto]=(tipoC[d.tipo_proyecto]||0)+1;});
+  barChart('ch-tipo', tipoC, k=>TIPO_COLOR[k]||'#888780');
+
+  const hoy=new Date(); hoy.setHours(0,0,0,0);
+  const prox = agrupados
+    .filter(d=>d.fecha_apertura)
+    .map(d=>({...d,diff:Math.ceil((new Date(d.fecha_apertura+'T00:00:00')-hoy)/86400000)}))
+    .sort((a,b)=>a.diff-b.diff).slice(0,10);
+
+  document.getElementById('ch-apertura').innerHTML = !prox.length
+    ? '<div style="color:var(--t3);font-size:13px;padding:8px">Ningún equipo tiene fecha de apertura cargada aún.</div>'
+    : `<table class="urg-table">
+        <thead><tr><th>Hospital</th><th>Equipo</th><th>Proyecto</th><th>Expediente</th><th>Fecha</th><th>Estado</th><th>Días</th></tr></thead>
+        <tbody>${prox.map(d=>`<tr>
+          <td style="font-weight:500">${d.hospital}</td><td>${d.equipo}</td>
+          <td style="color:var(--t2)">${d.nombre_proyecto||'—'}</td>
+          <td style="color:var(--t3)">${d.expediente||'—'}</td>
+          <td style="white-space:nowrap">${fmtFecha(d.fecha_apertura)}</td>
+          <td>${badge(d.estado)}</td><td>${diasChip(d.fecha_apertura)}</td>
+        </tr>`).join('')}</tbody>
+      </table>`;
+}
+
+function barChart(id,counts,colorFn){
+  const el=document.getElementById(id); if(!el) return;
+  const entries=Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+  const max=Math.max(...entries.map(([,v])=>v),1);
+  el.innerHTML=entries.map(([k,v])=>`
+    <div class="bar-row">
+      <div class="bar-label" title="${k}">${k||'—'}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.round(v/max*100)}%;background:${colorFn(k)}"></div></div>
+      <div class="bar-count">${v}</div>
+    </div>`).join('');
+}
+
+/* ---- PROYECTOS ---- */
+function renderProyectos(){
+  const grupos={};
+  agrupados.forEach(d=>{
+    const k=d.nombre_proyecto||'(sin proyecto)';
+    if(!grupos[k]) grupos[k]=[];
+    grupos[k].push(d);
+  });
+  const sorted=Object.entries(grupos).sort((a,b)=>b[1].length-a[1].length);
+  const totalGral=agrupados.reduce((a,d)=>a+d.p_total,0);
+  document.getElementById('proy-total').textContent=`Total: ${fmtUSD(totalGral)} · ${Object.keys(grupos).length} proyectos`;
+
+  document.getElementById('proy-container').innerHTML=sorted.map(([nombre,items],idx)=>{
+    const monto=items.reduce((a,d)=>a+d.p_total,0);
+    const hosps=[...new Set(items.map(d=>d.hospital))].sort().join(', ');
+    const estados={};
+    items.forEach(d=>{estados[d.estado]=(estados[d.estado]||0)+1;});
+    const estadosBadges=Object.entries(estados).map(([e,n])=>`${badge(e)} <span style="font-size:11px;color:var(--t3)">×${n}</span>`).join(' ');
+    return `<div class="proy-card">
+      <div class="proy-header" onclick="toggleProy(${idx})">
+        <div style="flex:1">
+          <div class="proy-name">${nombre}</div>
+          <div style="font-size:11px;color:var(--t3);margin-top:2px">${hosps}</div>
+          <div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:4px;align-items:center">${estadosBadges}</div>
+        </div>
+        <div class="proy-meta">
+          <span class="proy-count">${items.length} equipos</span>
+          <span class="proy-monto">${fmtUSD(monto)}</span>
+          <span class="proy-arrow" id="arrow-${idx}">▶</span>
+        </div>
+      </div>
+      <div class="proy-body" id="proy-body-${idx}">
+        <table class="proy-table">
+          <thead><tr><th>Hospital</th><th>Equipo</th><th>Tipo</th><th>Q total</th><th>P. Total</th><th>Apertura</th><th>Días</th><th>Estado</th></tr></thead>
+          <tbody>${items.map(d=>`<tr>
+            <td style="font-weight:500">${d.hospital}</td><td>${d.equipo}</td>
+            <td style="color:var(--t2)">${d.tipo||'—'}</td>
+            <td style="text-align:center;font-weight:500">${d.q_total||'—'}</td>
+            <td style="white-space:nowrap">${fmtUSD(d.p_total)}</td>
+            <td style="white-space:nowrap">${fmtFecha(d.fecha_apertura)}</td>
+            <td>${diasChip(d.fecha_apertura)}</td>
+            <td>${badge(d.estado)}</td>
+          </tr>`).join('')}</tbody>
+        </table>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleProy(idx){
+  document.getElementById('proy-body-'+idx).classList.toggle('open');
+  document.getElementById('arrow-'+idx).classList.toggle('open');
+}
+
+/* ---- EQUIPOS ---- */
+function renderFiltros(){
+  const hosps=[...new Set(agrupados.map(d=>d.hospital).filter(Boolean))].sort();
+  const tipos=[...new Set(agrupados.map(d=>d.tipo_proyecto).filter(Boolean))].sort();
+  const selH=document.getElementById('f-hosp'), selT=document.getElementById('f-tipo');
+  const curH=selH.value, curT=selT.value;
+  selH.innerHTML='<option value="">Todos los hospitales</option>'+hosps.map(h=>`<option${h===curH?' selected':''}>${h}</option>`).join('');
+  selT.innerHTML='<option value="">Todos los tipos</option>'+tipos.map(t=>`<option${t===curT?' selected':''}>${t}</option>`).join('');
+}
+
+function renderTabla(){
+  const q=(document.getElementById('search')?.value||'').toLowerCase();
+  const fE=document.getElementById('f-estado')?.value||'';
+  const fH=document.getElementById('f-hosp')?.value||'';
+  const fT=document.getElementById('f-tipo')?.value||'';
+  const filtered=agrupados.filter(d=>{
+    if(fE&&d.estado!==fE) return false;
+    if(fH&&d.hospital!==fH) return false;
+    if(fT&&d.tipo_proyecto!==fT) return false;
+    if(q){const txt=(d.hospital+d.equipo+d.tipo+d.nombre_proyecto+d.expediente+d.licitacion).toLowerCase();if(!txt.includes(q))return false;}
+    return true;
+  });
+  const totalF=filtered.reduce((a,d)=>a+d.p_total,0);
+  const totalG=agrupados.reduce((a,d)=>a+d.p_total,0);
+  document.getElementById('total-bar').innerHTML=`
+    <span class="total-bar-label">Total visible:</span>
+    <span class="total-bar-value">${fmtUSD(totalF)}</span>
+    <span class="total-bar-sub">de ${fmtUSD(totalG)} total · ${filtered.length} de ${agrupados.length} equipos únicos</span>`;
+  const tbody=document.getElementById('tbody');
+  const empty=document.getElementById('empty');
+  if(!filtered.length){tbody.innerHTML='';empty.style.display='';return;}
+  empty.style.display='none';
+  tbody.innerHTML=filtered.map(d=>`<tr>
+    <td style="font-weight:500">${d.hospital}</td>
+    <td>${d.equipo}${d.tipo?' <span class="chip">'+d.tipo+'</span>':''}</td>
+    <td style="color:var(--t2)">${d.tipo||'—'}</td>
+    <td style="text-align:center;font-weight:500">${d.q_total||'—'}</td>
+    <td style="color:var(--t3);font-size:11px">${d.hospitales_lista&&d.hospitales_lista.length>1?d.hospitales_lista.join(', '):'—'}</td>
+    <td style="white-space:nowrap">${d.p_unit||'—'}</td>
+    <td style="white-space:nowrap">${fmtUSD(d.p_total)}</td>
+    <td style="color:var(--t2);max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${d.nombre_proyecto||''}">${d.nombre_proyecto||'—'}</td>
+    <td>${d.tipo_proyecto||'—'}</td>
+    <td style="color:var(--t3)">${d.expediente||'—'}</td>
+    <td style="color:var(--t3)">${d.licitacion||'—'}</td>
+    <td style="white-space:nowrap">${fmtFecha(d.fecha_apertura)} ${diasChip(d.fecha_apertura)}</td>
+    <td>${badge(d.estado)}</td>
+    <td><span class="tag-cheq ${d.chequeado==='TRUE'?'tag-si':'tag-no'}">${d.chequeado==='TRUE'?'Sí':'No'}</span></td>
+  </tr>`).join('');
+  document.getElementById('tfoot').textContent=`Mostrando ${filtered.length} de ${agrupados.length} equipos únicos`;
+}
+
+cargarDatos();
+</script>
+</body>
+</html>
