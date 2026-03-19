@@ -187,7 +187,8 @@ table.main tr:hover td{background:var(--bg2)}
   </div>
 </div>
 <script>
-var CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTMwWUwo7BQxyUhUAQtapVGDT5vnRv28LzwF4mgv7LU4vGbJoxtNgwV-pI_It9bh5aSCtg0lwQLtPyW/pub?gid=0&single=true&output=csv';
+var SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTMwWUwo7BQxyUhUAQtapVGDT5vnRv28LzwF4mgv7LU4vGbJoxtNgwV-pI_It9bh5aSCtg0lwQLtPyW/pub?gid=0&single=true&output=csv';
+var CSV_URL = 'https://corsproxy.io/?' + encodeURIComponent(SHEET_URL);
 var ESTADO_CLS = {'SIN AVANCE':'sin','ARMADO DE PLIEGO':'pliego','PLIEGO FIRMADO':'firmado','2026':'adj','NO SE COMPRO':'noc'};
 var ESTADO_COLOR = {'SIN AVANCE':'#888780','ARMADO DE PLIEGO':'#7F77DD','PLIEGO FIRMADO':'#378ADD','2026':'#639922','NO SE COMPRO':'#E24B4A'};
 var ESTADO_ORDER = ['SIN AVANCE','ARMADO DE PLIEGO','PLIEGO FIRMADO','2026','NO SE COMPRO'];
@@ -264,7 +265,7 @@ function agrupar(rows) {
   for (var i = 0; i < rows.length; i++) {
     var r = rows[i];
     if (!r['HOSPITAL'] || r['HOSPITAL'].indexOf('CANTIDAD') === 0) continue;
-    var key = r['HOSPITAL'] + '|||' + r['EQUIPO'] + '|||' + r['NOMBRE PROYECTO'];
+    var key = r['HOSPITAL'] + '|||' + r['EQUIPO'] + '|||' + r['TIPO'] + '|||' + r['NOMBRE PROYECTO'];
     if (!mapa[key]) {
       mapa[key] = {
         hospital: r['HOSPITAL'],
