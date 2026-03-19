@@ -200,7 +200,7 @@ table.main tr:hover td{background:var(--bg2)}
   </div>
 </div>
 <script>
-var API_URL = 'https://script.google.com/macros/s/AKfycbxJ8ab9WuebTiY8-Q4EtM_R_HTAVhQ4SNd07xNMnp4oeDsjQpfi0Ui-ZZP59La-juus/exec';
+var API_URL = 'https://script.google.com/macros/s/AKfycbwbdnUawAsX489nREY8cUQ6XBogbGJsC27cNGhvBOnaCX4D8dUcaZwZiaQI1wghxeDu/exec';
 
 // Estados correctos con su clase CSS y color
 var ESTADOS = [
@@ -338,23 +338,36 @@ function agrupar(rows) {
 function cargarDatos(manual) {
   var dot=document.getElementById('sync-dot'), lbl=document.getElementById('sync-label');
   dot.className='sync-dot loading'; lbl.textContent='Cargando...';
-  fetch(API_URL+'?nocache='+Date.now())
-    .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
-    .then(function(rows){
-      rawCount=rows.filter(function(r){return r['HOSPITAL']&&String(r['HOSPITAL']).indexOf('CANTIDAD')!==0;}).length;
-      agrupados=agrupar(rows);
-      dot.className='sync-dot';
-      var now=new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
-      lbl.textContent='Actualizado '+now;
-      document.getElementById('header-count').textContent=agrupados.length+' equipos unicos';
-      document.getElementById('loading-screen').style.display='none';
-      document.getElementById('app').style.display='';
-      renderDash(); renderFiltros();
-    })
-    .catch(function(err){
-      dot.className='sync-dot error'; lbl.textContent='Error al cargar';
-      document.getElementById('loading-screen').innerHTML='<p style="color:#E24B4A;font-size:14px">No se pudo cargar el Sheet.<br><br><button onclick="cargarDatos(true)" style="margin-top:8px;padding:6px 14px;font-size:13px;border:0.5px solid rgba(0,0,0,0.25);border-radius:8px;background:#fff;cursor:pointer">Reintentar</button></p>';
-    });
+  var cbName = 'cb_' + Date.now();
+  var script = document.createElement('script');
+  var timeout = setTimeout(function(){
+    dot.className='sync-dot error'; lbl.textContent='Error al cargar';
+    document.getElementById('loading-screen').innerHTML='<p style="color:#E24B4A;font-size:14px">No se pudo cargar el Sheet.<br><br><button onclick="cargarDatos(true)" style="margin-top:8px;padding:6px 14px;font-size:13px;border:0.5px solid rgba(0,0,0,0.25);border-radius:8px;background:#fff;cursor:pointer">Reintentar</button></p>';
+    delete window[cbName];
+    if(script.parentNode) script.parentNode.removeChild(script);
+  }, 10000);
+  window[cbName] = function(rows){
+    clearTimeout(timeout);
+    delete window[cbName];
+    if(script.parentNode) script.parentNode.removeChild(script);
+    rawCount=rows.filter(function(r){return r['HOSPITAL']&&String(r['HOSPITAL']).indexOf('CANTIDAD')!==0;}).length;
+    agrupados=agrupar(rows);
+    dot.className='sync-dot';
+    var now=new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
+    lbl.textContent='Actualizado '+now;
+    document.getElementById('header-count').textContent=agrupados.length+' equipos unicos';
+    document.getElementById('loading-screen').style.display='none';
+    document.getElementById('app').style.display='';
+    renderDash(); renderFiltros();
+  };
+  script.src = API_URL + '?callback=' + cbName + '&nocache=' + Date.now();
+  script.onerror = function(){
+    clearTimeout(timeout);
+    dot.className='sync-dot error'; lbl.textContent='Error al cargar';
+    document.getElementById('loading-screen').innerHTML='<p style="color:#E24B4A;font-size:14px">No se pudo cargar el Sheet.<br><br><button onclick="cargarDatos(true)" style="margin-top:8px;padding:6px 14px;font-size:13px;border:0.5px solid rgba(0,0,0,0.25);border-radius:8px;background:#fff;cursor:pointer">Reintentar</button></p>';
+    delete window[cbName];
+  };
+  document.head.appendChild(script);
 }
 
 function showTab(t) {
