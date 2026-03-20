@@ -200,7 +200,7 @@ table.main tr:hover td{background:var(--bg2)}
   </div>
 </div>
 <script>
-var API_URL = 'https://script.google.com/macros/s/AKfycbwbdnUawAsX489nREY8cUQ6XBogbGJsC27cNGhvBOnaCX4D8dUcaZwZiaQI1wghxeDu/exec';
+var API_URL = 'https://script.google.com/macros/s/AKfycbzD-hJkihX-7wLb4DqUfGCYtIYRWEc2VdziaJ5h0EbMnZhCZAaKx67aoCCLY-Os7jD3/exec';
 
 // Estados correctos con su clase CSS y color
 var ESTADOS = [
@@ -251,10 +251,13 @@ function parseCSV(text) {
   return result;
 }
 
-function parseUSD(str) {
-  if (!str) return 0;
-  var n = parseFloat(str.replace(/[^0-9.]/g,''));
-  return isNaN(n) ? 0 : n;
+function parseUSD(value) {
+  if (value === null || value === undefined || value === '') return 0;
+  if (typeof value === 'boolean') return 0;
+  if (typeof value === 'number') return isNaN(value) ? 0 : value;
+  var str = String(value).replace(/[^0-9.]/g, '');
+  var num = parseFloat(str);
+  return isNaN(num) ? 0 : num;
 }
 function fmtUSD(n) {
   if (!n) return '\u2014';
